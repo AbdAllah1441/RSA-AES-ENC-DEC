@@ -9,14 +9,14 @@ from Crypto.Random import get_random_bytes
 # Generate an RSA key pair for sender
 rsa_key_s = RSA.generate(2048)
 
-# Get the public key and private key for RSA
+# Get the public key and private key for RSA for sender
 public_key_s = rsa_key_s.publickey()
 private_key_s = rsa_key_s.export_key()
 
-# Generate an RSA key pair
+# Generate an RSA key pair for reciever
 rsa_key_r = RSA.generate(2048)
 
-# Get the public key and private key for RSA
+# Get the public key and private key for RSA for reciever
 public_key_r = rsa_key_r.publickey()
 private_key_r = rsa_key_r.export_key()
 
@@ -24,7 +24,7 @@ private_key_r = rsa_key_r.export_key()
 # AES key exchange
 # =========================================================================
 
-# Get data input from the user
+# Get AES key from the user
 print("")
 aes_key = input("Enter your AES-key (16 bytes): ").encode('utf-8')
 if len(aes_key) != 16:
@@ -49,12 +49,9 @@ print("Decrypted AES key:", decrypted_aes_key.decode('utf-8'))
 print("")
 
 # =========================================================================
-# sending the data
+# get plaintext from the user and paths for required files
 # =========================================================================
 
-# Encrypt the plaintext with RSA
-
-# get plaintext from the user and paths for required files
 data_path = input("Enter the path of the file of your data: ")
 print("")
 if data_path[0] == '"' and data_path[-1] == '"':
@@ -70,6 +67,12 @@ print("")
 if dec_path[0] == '"' and dec_path[-1] == '"':
     dec_path = dec_path[1:-1]
 
+# =========================================================================
+# sending the data
+# =========================================================================
+
+# Encrypt the plaintext with RSA
+
 # Open a file for reading
 with open(data_path, 'r') as file:
     # Read the entire file content
@@ -78,6 +81,7 @@ with open(data_path, 'r') as file:
 print("Your entered data:")
 print(plaintext)
 print("")
+
 # Create an RSA cipher object for encryption of the plaintext
 cipher_rsa_s_plain = PKCS1_OAEP.new(public_key_r)
 
